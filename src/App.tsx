@@ -1,62 +1,175 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { Header } from './components/layout/Header'
+import { InfoCard } from './components/info/InfoCard'
+import { GasFormSection } from './components/gas/GasFormSection'
+import { PatientCard } from './components/patient/PatientCard'
+import { ActionsBar } from './components/common/ActionsBar'
+import { RemindersSection } from './components/reminders/RemindersSection'
+import { GoalsSection } from './components/goals/GoalsSection'
+import { LoadingModal } from './components/common/LoadingModal'
+import { SuccessModal } from './components/common/SuccessModal'
+import { useGasForm } from './hooks/useGasForm'
+import { useGoals } from './hooks/useGoals'
+import { useAISuggestions } from './hooks/useAISuggestions'
+import { validateGasForm, validateGoalSuggestion } from './utils/validation'
+import { focusElement } from './utils/focus'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const { form, errors, updateField, setErrors, clearErrors, resetForm } = useGasForm()
+  const { goals, updateGoal, updateGoalLevel, addGoal, removeGoal, cloneGoal, resetGoals } = useGoals()
+  const {
+    isThinking,
+    isSuggestingMeta,
+    suggestingGoalId,
+    metaHighlight,
+    goalHighlightId,
+    suggestMeta,
+    suggestLevels,
+  } = useAISuggestions()
+  const [showSuccessModal, setShowSuccessModal] = useState(false)
+
+  function handleSuggestMeta() {
+    const validation = validateGoalSuggestion(form)
+
+    if (Object.keys(validation.errors).length > 0) {
+      setErrors(validation.errors)
+      if (validation.focusTarget) {
+        focusElement(validation.focusTarget)
+      }
+      return
+    }
+
+    clearErrors(['problems', 'objectives'])
+    const firstGoalId = goals[0]?.id
+    suggestMeta(firstGoalId, updateGoal, (name) => updateField('name', name))
+  }
+
+  function handleSuggestLevels(goalId: string) {
+    const goal = goals.find((g) => g.id === goalId)
+
+    if (!goal || !goal.name.trim()) {
+      setErrors({ goals: 'Informe o nome da meta antes de sugerir níveis.' })
+      focusElement(`goal-${goalId}-name`)
+      return
+    }
+
+    suggestLevels(goalId, goal.baseline, updateGoal)
+  }
+
+  function handleSave() {
+    const validation = validateGasForm(form, goals)
+
+    if (Object.keys(validation.errors).length > 0) {
+      setErrors(validation.errors)
+      if (validation.focusTarget) {
+        focusElement(validation.focusTarget)
+      }
+      return
+    }
+
+    setShowSuccessModal(true)
+    resetForm()
+    resetGoals()
+  }
 
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-50 flex items-center justify-center px-6">
-      <div className="w-full max-w-2xl text-center space-y-10">
-        <div className="flex items-center justify-center gap-10">
-          <a
-            href="https://vite.dev"
-            target="_blank"
-            className="transition-transform duration-200 hover:scale-105 hover:drop-shadow-[0_18px_40px_rgba(100,108,255,0.45)]"
-          >
-            <img
-              src={viteLogo}
-              alt="Vite logo"
-              className="h-20 w-20 drop-shadow-[0_10px_30px_rgba(0,0,0,0.35)]"
-            />
-          </a>
-          <a
-            href="https://react.dev"
-            target="_blank"
-            className="transition-transform duration-200 hover:scale-105 hover:drop-shadow-[0_18px_40px_rgba(97,218,251,0.45)]"
-          >
-            <img
-              src={reactLogo}
-              alt="React logo"
-              className="h-20 w-20 drop-shadow-[0_10px_30px_rgba(0,0,0,0.35)]"
-            />
-          </a>
+    <div className="min-h-screen bg-slate-50 text-[#292965]">
+      <LoadingModal isOpen={isThinking} />
+      <SuccessModal isOpen={showSuccessModal} onClose={() => setShowSuccessModal(false)} />
+
+      <Header />
+
+      <main className="mx-auto max-w-6xl space-y-6 px-5 pt-2 pb-8">
+        <div className="pb-2">
+          <h1 className="text-2xl font-semibold text-[#292965]">Configurar nova GAS</h1>
         </div>
 
-        <div className="space-y-4">
-          <h1 className="text-4xl font-bold tracking-tight">Vite + React</h1>
-          <p className="text-lg text-slate-300">
-            Agora usando apenas utilitários do Tailwind CSS — sem classes personalizadas.
-          </p>
+        <div className="grid gap-4 lg:grid-cols-[320px,1fr]">
+          <InfoCard
+            title="Detalhes da GAS"
+            description="Defina o contexto clínico da GAS. Essas informações ajudam a organizar o acompanhamento e melhoram as sugestões da IA."
+          />
+          <GasFormSection
+            form={form}
+            onChange={updateField}
+            onSuggestMeta={handleSuggestMeta}
+            isSuggesting={isSuggestingMeta}
+            isHighlighted={metaHighlight}
+            nameError={errors.name}
+            problemsError={errors.problems}
+            objectivesError={errors.objectives}
+          />
         </div>
 
-        <div className="bg-slate-800/70 border border-slate-700 rounded-2xl p-8 shadow-2xl space-y-6">
-          <button
-            onClick={() => setCount((value) => value + 1)}
-            className="inline-flex items-center justify-center rounded-xl bg-indigo-500 px-5 py-2.5 text-base font-semibold text-white shadow-lg shadow-indigo-500/25 transition hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-300 active:scale-[0.99]"
+        <div className="grid gap-4 lg:grid-cols-[320px,1fr]">
+          <InfoCard
+            title="Detalhes do paciente"
+            description="Associe a GAS a um paciente. O telefone é usado para envio das submissões via WhatsApp."
+          />
+          <PatientCard
+            form={form}
+            onChange={updateField}
+            patientError={errors.patient}
+            phoneError={errors.phone}
+          />
+        </div>
+
+        <div className="grid gap-4 lg:grid-cols-[320px,1fr]">
+          <InfoCard
+            title="Lembretes"
+            description="Configure a recorrência e os dias de disparo. O paciente receberá as submissões automaticamente nos horários definidos."
+          />
+          <RemindersSection />
+        </div>
+
+        <div className="grid gap-4 lg:grid-cols-[320px,1fr]">
+          <InfoCard
+            title="Metas"
+            description="Crie metas com escala completa (-2 a +2). Quanto mais específico for o texto de cada nível, mais fácil será interpretar a evolução."
           >
-            count is {count}
-          </button>
-
-          <p className="text-sm text-slate-300">
-            Edite <code className="font-mono text-slate-100">src/App.tsx</code> e salve para testar o HMR.
-          </p>
+            <div className="rounded-xl border border-indigo-100 bg-indigo-50/50 px-3.5 py-3">
+              <div className="flex items-start gap-2.5">
+                <div className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-indigo-100">
+                  <svg
+                    viewBox="0 0 16 16"
+                    className="h-3.5 w-3.5 text-indigo-600"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <circle cx="8" cy="8" r="6" />
+                    <path d="M8 10V8M8 5.5h.01" strokeLinecap="round" />
+                  </svg>
+                </div>
+                <div className="flex-1 space-y-1">
+                  <p className="text-sm font-semibold text-indigo-700">Nível base da meta</p>
+                  <p className="text-xs leading-relaxed text-indigo-600">
+                    Você pode usar o <span className="font-semibold">Nível 0</span> ou o{' '}
+                    <span className="font-semibold">Nível -1</span> como linha base, de acordo com o
+                    contexto do paciente
+                  </p>
+                </div>
+              </div>
+            </div>
+          </InfoCard>
+          <GoalsSection
+            goals={goals}
+            isSuggestingId={suggestingGoalId}
+            highlightGoalId={goalHighlightId}
+            goalsError={errors.goals}
+            onGoalChange={updateGoal}
+            onLevelChange={updateGoalLevel}
+            onSuggestLevels={handleSuggestLevels}
+            onDuplicate={cloneGoal}
+            onDelete={removeGoal}
+            onAdd={addGoal}
+          />
         </div>
 
-        <p className="text-sm text-slate-400">
-          Clique nos logos para saber mais sobre cada tecnologia.
-        </p>
-      </div>
+        <div className="flex justify-end">
+          <ActionsBar onSave={handleSave} />
+        </div>
+      </main>
     </div>
   )
 }
