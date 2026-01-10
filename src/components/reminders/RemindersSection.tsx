@@ -101,17 +101,3 @@ function Switch({ checked, onToggle }: { checked: boolean; onToggle: () => void 
   )
 }
 
-function ChevronDownIcon() {
-  return (
-    <svg
-      viewBox="0 0 16 16"
-      className="h-4 w-4 text-slate-500"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-    >
-      <path d="m4 6 4 4 4-4" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  )
-}
-
