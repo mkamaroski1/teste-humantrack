@@ -13,6 +13,5 @@ export function duplicateGoal(goal: Goal, newId: string): Goal {
   return {
     ...goal,
     id: newId,
-    name: `${goal.name} (cópia)`,
   }
 }

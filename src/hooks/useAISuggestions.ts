@@ -28,7 +28,6 @@ export function useAISuggestions() {
   const suggestMeta = useCallback((
     firstGoalId: string | undefined,
     onUpdateGoal: (goalId: string, data: Partial<Goal>) => void,
-    onUpdateFormName: (name: string) => void,
   ) => {
     setState((prev) => ({ ...prev, isSuggestingMeta: true }))
 
@@ -38,7 +37,6 @@ export function useAISuggestions() {
       if (firstGoalId) {
         onUpdateGoal(firstGoalId, { name: suggestedName })
       }
-      onUpdateFormName(suggestedName)
 
       setState((prev) => ({ ...prev, isSuggestingMeta: false, metaHighlight: true }))
       setTimeout(() => {
