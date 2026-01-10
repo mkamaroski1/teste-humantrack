@@ -40,7 +40,9 @@ export function RemindersSection() {
           <label className="text-sm font-semibold text-[#292965]">Recorrência da submissão</label>
           <div className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2.5 shadow-sm transition focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-100">
             <select
-              className="w-full bg-transparent text-sm text-slate-900 outline-none"
+              className={`w-full bg-transparent text-sm outline-none ${
+                recurrence ? 'text-slate-900' : 'text-slate-400'
+              }`}
               value={recurrence}
               onChange={(e) => setRecurrence(e.target.value)}
             >
