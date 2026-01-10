@@ -21,7 +21,6 @@ function App() {
     isThinking,
     isSuggestingMeta,
     suggestingGoalId,
-    metaHighlight,
     goalHighlightId,
     suggestMeta,
     suggestLevels,
@@ -41,7 +40,7 @@ function App() {
 
     clearErrors(['problems', 'objectives'])
     const firstGoalId = goals[0]?.id
-    suggestMeta(firstGoalId, updateGoal, (name) => updateField('name', name))
+    suggestMeta(firstGoalId, updateGoal)
   }
 
   function handleSuggestLevels(goalId: string) {
@@ -67,15 +66,20 @@ function App() {
       return
     }
 
-    setShowSuccessModal(true)
+    // Salva com sucesso - limpa IMEDIATAMENTE
     resetForm()
     resetGoals()
+    setShowSuccessModal(true)
+  }
+
+  function handleCloseSuccessModal() {
+    setShowSuccessModal(false)
   }
 
   return (
     <div className="min-h-screen bg-slate-50 text-primary">
       <LoadingModal isOpen={isThinking} />
-      <SuccessModal isOpen={showSuccessModal} onClose={() => setShowSuccessModal(false)} />
+      <SuccessModal isOpen={showSuccessModal} onClose={handleCloseSuccessModal} />
 
       <Header />
 
@@ -94,7 +98,6 @@ function App() {
             onChange={updateField}
             onSuggestMeta={handleSuggestMeta}
             isSuggesting={isSuggestingMeta}
-            isHighlighted={metaHighlight}
             nameError={errors.name}
             problemsError={errors.problems}
             objectivesError={errors.objectives}

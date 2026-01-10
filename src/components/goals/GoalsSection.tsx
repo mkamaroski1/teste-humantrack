@@ -96,7 +96,9 @@ function GoalCard({
     <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
       <div className="space-y-3">
         <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
-          <p className="text-sm font-semibold text-primary">Meta {index}</p>
+          <p className="text-sm font-semibold text-primary" data-testid={`goal-title-${goal.id}`}>
+            Meta {index}
+          </p>
           <div className="flex items-center gap-2">
             <button
               type="button"

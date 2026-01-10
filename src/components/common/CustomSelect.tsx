@@ -6,6 +6,7 @@ type Option = {
 }
 
 type CustomSelectProps = {
+  id?: string
   value: string
   onChange: (value: string) => void
   options: Option[]
@@ -13,13 +14,14 @@ type CustomSelectProps = {
   error?: boolean
 }
 
-export function CustomSelect({ value, onChange, options, placeholder, error }: CustomSelectProps) {
+export function CustomSelect({ id, value, onChange, options, placeholder, error }: CustomSelectProps) {
   const [isOpen, setIsOpen] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
+  const buttonRef = useRef<HTMLButtonElement>(null)
 
-  const selectedOption = options.find((opt) => opt.value === value)
+  const selectedOption = options.find((opt) => opt.value === value && opt.value !== '')
   const displayText = selectedOption?.label || placeholder || 'Selecione...'
-  const isPlaceholder = !selectedOption
+  const isPlaceholder = !selectedOption || value === ''
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -42,6 +44,8 @@ export function CustomSelect({ value, onChange, options, placeholder, error }: C
   return (
     <div ref={containerRef} className="relative">
       <button
+        ref={buttonRef}
+        id={id}
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         className={`relative flex w-full items-center justify-between gap-2 rounded-lg border bg-white px-3 py-2.5 text-left text-sm shadow-sm transition focus:outline-none focus:ring-2 focus:ring-indigo-100 ${

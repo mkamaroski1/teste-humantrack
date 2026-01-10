@@ -45,6 +45,7 @@ export function PatientCard({ form, onChange, patientError, phoneError }: Props)
         <div className="space-y-2">
           <label className="text-sm font-medium text-primary">Paciente</label>
           <CustomSelect
+            id="patient-select"
             value={form.patient}
             onChange={(value) => onChange('patient', value)}
             options={PATIENT_OPTIONS}
