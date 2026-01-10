@@ -135,26 +135,34 @@ function GoalCard({
       <div className="mt-4 space-y-2">
         <p className="text-sm font-medium text-primary">Linha base da Meta</p>
         <div className="flex flex-col gap-2">
-          <label className="flex items-center gap-2 text-sm text-primary">
-            <input
-              type="radio"
-              name={`baseline-${goal.id}`}
-              value="0"
-              checked={goal.baseline === '0'}
-              onChange={() => onGoalChange(goal.id, { baseline: '0' })}
-              className="h-4 w-4 accent-primary-light"
-            />
+          <label className="flex items-center gap-2 text-sm text-primary cursor-pointer">
+            <div className="relative flex items-center justify-center">
+              <input
+                type="radio"
+                name={`baseline-${goal.id}`}
+                value="0"
+                checked={goal.baseline === '0'}
+                onChange={() => onGoalChange(goal.id, { baseline: '0' })}
+                className="peer sr-only"
+              />
+              <div className="h-4 w-4 rounded-full border-2 border-slate-300 bg-white peer-checked:border-[#6868EE] transition-colors" />
+              <div className="absolute h-2 w-2 rounded-full bg-[#6868EE] opacity-0 peer-checked:opacity-100 transition-opacity" />
+            </div>
             Nível 0
           </label>
-          <label className="flex items-center gap-2 text-sm text-primary">
-            <input
-              type="radio"
-              name={`baseline-${goal.id}`}
-              value="-1"
-              checked={goal.baseline === '-1'}
-              onChange={() => onGoalChange(goal.id, { baseline: '-1' })}
-              className="h-4 w-4 accent-primary-light"
-            />
+          <label className="flex items-center gap-2 text-sm text-primary cursor-pointer">
+            <div className="relative flex items-center justify-center">
+              <input
+                type="radio"
+                name={`baseline-${goal.id}`}
+                value="-1"
+                checked={goal.baseline === '-1'}
+                onChange={() => onGoalChange(goal.id, { baseline: '-1' })}
+                className="peer sr-only"
+              />
+              <div className="h-4 w-4 rounded-full border-2 border-slate-300 bg-white peer-checked:border-[#6868EE] transition-colors" />
+              <div className="absolute h-2 w-2 rounded-full bg-[#6868EE] opacity-0 peer-checked:opacity-100 transition-opacity" />
+            </div>
             Nível -1
           </label>
         </div>
