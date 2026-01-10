@@ -8,7 +8,6 @@ type Props = {
   onChange: <K extends keyof GasForm>(key: K, value: GasForm[K]) => void
   onSuggestMeta: () => void
   isSuggesting: boolean
-  isHighlighted: boolean
   nameError?: string
   problemsError?: string
   objectivesError?: string
@@ -19,7 +18,6 @@ export function GasFormSection({
   onChange,
   onSuggestMeta,
   isSuggesting,
-  isHighlighted,
   nameError,
   problemsError,
   objectivesError,
@@ -66,7 +64,7 @@ export function GasFormSection({
             onChange={(value) => onChange('problems', value)}
             placeholder="Descreva o principal problema funcional..."
             rows={3}
-            isHighlighted={isHighlighted}
+            isHighlighted={false}
             hasError={!!problemsError}
           />
           {problemsError && <p className="text-xs font-semibold text-red-500">{problemsError}</p>}
@@ -83,7 +81,7 @@ export function GasFormSection({
             onChange={(value) => onChange('objectives', value)}
             placeholder="Descreva o resultado esperado..."
             rows={3}
-            isHighlighted={isHighlighted}
+            isHighlighted={false}
             hasError={!!objectivesError}
           />
           {objectivesError && <p className="text-xs font-semibold text-red-500">{objectivesError}</p>}
@@ -99,10 +97,10 @@ export function GasFormSection({
             </div>
             <div className="flex-1 space-y-1">
               <p className="font-semibold text-indigo-700">
-                Use IA da HumanTrack para gerar sugestões SMART baseadas no título da meta
+                IA da HumanTrack gera sugestao de nome para meta
               </p>
               <p className="text-xs text-indigo-600">
-                Inclua detalhes específicos como métricas, percentuais e prazos para melhores resultados
+                Preencha "Problemas" e "Objetivos" e clique no botao. A IA vai ler e sugerir um nome para sua primeira meta.
               </p>
             </div>
           </div>
