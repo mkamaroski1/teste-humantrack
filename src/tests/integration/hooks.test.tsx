@@ -126,13 +126,17 @@ describe('Hooks - Integration Tests', () => {
       expect(result.current.goals).toHaveLength(1)
     })
 
-    it('deve duplicar meta com sufixo (cópia)', () => {
+    it('deve duplicar meta com todos os dados', () => {
       const { result } = renderHook(() => useGoals())
 
       const goalId = result.current.goals[0].id
 
       act(() => {
-        result.current.updateGoal(goalId, { name: 'Meta Original' })
+        result.current.updateGoal(goalId, { 
+          name: 'Meta Original',
+          baseline: '-1',
+        })
+        result.current.updateGoalLevel(goalId, '2', 'Nivel +2 teste')
       })
 
       act(() => {
@@ -140,7 +144,9 @@ describe('Hooks - Integration Tests', () => {
       })
 
       expect(result.current.goals).toHaveLength(2)
-      expect(result.current.goals[1].name).toBe('Meta Original (cópia)')
+      expect(result.current.goals[1].name).toBe('Meta Original')
+      expect(result.current.goals[1].baseline).toBe('-1')
+      expect(result.current.goals[1].levels['2']).toBe('Nivel +2 teste')
     })
 
     it('deve resetar para uma meta vazia', () => {
