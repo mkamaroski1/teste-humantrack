@@ -1,3 +1,4 @@
+import { CustomSelect } from '../common/CustomSelect'
 import type { GasForm } from '../../types/gas'
 
 type Props = {
@@ -6,6 +7,13 @@ type Props = {
   patientError?: string
   phoneError?: string
 }
+
+const PATIENT_OPTIONS = [
+  { value: '', label: 'Ex: Bruce Wayne' },
+  { value: 'bruce', label: 'Bruce Wayne' },
+  { value: 'diana', label: 'Diana Prince' },
+  { value: 'gustavo', label: 'Gustavo' },
+]
 
 function formatPhoneNumber(value: string): string {
   // Remove tudo que não é dígito
@@ -36,27 +44,13 @@ export function PatientCard({ form, onChange, patientError, phoneError }: Props)
       <div className="grid gap-4 md:grid-cols-[2fr_1.2fr]">
         <div className="space-y-2">
           <label className="text-sm font-medium text-primary">Paciente</label>
-          <div
-            className={`flex items-center gap-2 rounded-lg border bg-white px-3 py-2.5 shadow-sm transition focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-100 ${
-              patientError ? 'border-red-400' : 'border-slate-200'
-            }`}
-          >
-            <select
-              id="patient-select"
-              className={`w-full bg-transparent text-sm outline-none ${
-                form.patient === '' ? 'text-slate-400' : 'text-slate-900'
-              }`}
-              value={form.patient}
-              onChange={(e) => onChange('patient', e.target.value)}
-            >
-              <option value="" disabled className="text-slate-400">
-                Ex: Bruce Wayne
-              </option>
-              <option value="bruce" className="text-slate-900">Bruce Wayne</option>
-              <option value="diana" className="text-slate-900">Diana Prince</option>
-              <option value="gustavo" className="text-slate-900">Gustavo</option>
-            </select>
-          </div>
+          <CustomSelect
+            value={form.patient}
+            onChange={(value) => onChange('patient', value)}
+            options={PATIENT_OPTIONS}
+            placeholder="Ex: Bruce Wayne"
+            error={!!patientError}
+          />
           {patientError && <p className="text-xs font-semibold text-red-500">{patientError}</p>}
         </div>
 

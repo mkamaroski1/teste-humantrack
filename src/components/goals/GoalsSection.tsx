@@ -140,7 +140,7 @@ function GoalCard({
               value="0"
               checked={goal.baseline === '0'}
               onChange={() => onGoalChange(goal.id, { baseline: '0' })}
-              className="h-4 w-4 accent-indigo-600"
+              className="h-4 w-4 accent-primary-light"
             />
             Nível 0
           </label>
@@ -151,7 +151,7 @@ function GoalCard({
               value="-1"
               checked={goal.baseline === '-1'}
               onChange={() => onGoalChange(goal.id, { baseline: '-1' })}
-              className="h-4 w-4 accent-indigo-600"
+              className="h-4 w-4 accent-primary-light"
             />
             Nível -1
           </label>

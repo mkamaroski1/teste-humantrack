@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { CustomSelect } from '../common/CustomSelect'
 
 type DaySchedule = {
   key: string
@@ -15,6 +16,13 @@ const INITIAL_DAYS: DaySchedule[] = [
   { key: 'friday', label: 'Sexta-feira', enabled: false, time: '12:00' },
   { key: 'saturday', label: 'Sábado', enabled: false, time: '12:00' },
   { key: 'sunday', label: 'Domingo', enabled: false, time: '12:00' },
+]
+
+const RECURRENCE_OPTIONS = [
+  { value: '', label: 'Ex: Semanalmente' },
+  { value: 'daily', label: 'Diariamente' },
+  { value: 'weekly', label: 'Semanalmente' },
+  { value: 'monthly', label: 'Mensalmente' },
 ]
 
 export function RemindersSection() {
@@ -38,22 +46,12 @@ export function RemindersSection() {
       <div className="grid gap-4 md:grid-cols-[1.1fr,1fr]">
         <div className="space-y-2">
           <label className="text-sm font-semibold text-primary">Recorrência da submissão</label>
-          <div className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2.5 shadow-sm transition focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-100">
-            <select
-              className={`w-full bg-transparent text-sm outline-none ${
-                recurrence ? 'text-slate-900' : 'text-slate-400'
-              }`}
-              value={recurrence}
-              onChange={(e) => setRecurrence(e.target.value)}
-            >
-              <option value="" disabled>
-                Ex: Semanalmente
-              </option>
-              <option value="daily">Diariamente</option>
-              <option value="weekly">Semanalmente</option>
-              <option value="monthly">Mensalmente</option>
-            </select>
-          </div>
+          <CustomSelect
+            value={recurrence}
+            onChange={setRecurrence}
+            options={RECURRENCE_OPTIONS}
+            placeholder="Ex: Semanalmente"
+          />
         </div>
 
         <div className="flex flex-col gap-3">
@@ -88,13 +86,13 @@ function Switch({ checked, onToggle }: { checked: boolean; onToggle: () => void 
     <button
       type="button"
       onClick={onToggle}
-      className={`relative h-6 w-11 rounded-full border transition ${
-        checked ? 'border-indigo-200 bg-primary-light' : 'border-slate-200 bg-slate-200'
+      className={`relative h-6 w-11 rounded-full transition-all duration-300 ease-in-out ${
+        checked ? 'bg-primary-light shadow-inner' : 'bg-slate-300'
       }`}
     >
       <span
-        className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition ${
-          checked ? 'left-5' : 'left-0.5'
+        className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow-md transition-all duration-300 ease-in-out ${
+          checked ? 'left-5 scale-100' : 'left-0.5 scale-95'
         }`}
       />
     </button>

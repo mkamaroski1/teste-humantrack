@@ -1,5 +1,6 @@
-import { CalendarIcon, InfoIcon, WandIcon } from '../common/icons'
+import { InfoIcon, WandIcon } from '../common/icons'
 import { HighlightedTextarea } from '../common/HighlightedTextarea'
+import { CustomDatePicker } from '../common/CustomDatePicker'
 import type { GasForm } from '../../types/gas'
 
 type Props = {
@@ -43,27 +44,17 @@ export function GasFormSection({
         <div className="grid gap-4 md:grid-cols-2">
           <div className="space-y-2">
             <label className="text-sm font-medium text-primary">Data de início</label>
-            <div className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2.5 shadow-sm transition focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-100">
-              <CalendarIcon />
-              <input
-                type="date"
-                className="w-full bg-transparent text-sm text-slate-900 outline-none"
-                value={form.startDate}
-                onChange={(e) => onChange('startDate', e.target.value)}
-              />
-            </div>
+            <CustomDatePicker
+              value={form.startDate}
+              onChange={(value) => onChange('startDate', value)}
+            />
           </div>
           <div className="space-y-2">
             <label className="text-sm font-medium text-primary">Data final</label>
-            <div className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2.5 shadow-sm transition focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-100">
-              <CalendarIcon />
-              <input
-                type="date"
-                className="w-full bg-transparent text-sm text-slate-900 outline-none"
-                value={form.endDate}
-                onChange={(e) => onChange('endDate', e.target.value)}
-              />
-            </div>
+            <CustomDatePicker
+              value={form.endDate}
+              onChange={(value) => onChange('endDate', value)}
+            />
           </div>
         </div>
 
