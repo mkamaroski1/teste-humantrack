@@ -3,6 +3,7 @@ import userIcon from '../../assets/icons/user.svg'
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [patientDataEnabled, setPatientDataEnabled] = useState(true)
 
   return (
     <header className="bg-[#F7F7FA]">
@@ -20,9 +21,19 @@ export function Header() {
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center gap-3 lg:gap-4">
             <label className="flex items-center gap-2 text-sm font-medium text-[#292965] cursor-pointer">
-              <div className="relative inline-flex h-4 w-8 items-center rounded-full bg-indigo-500">
-                <span className="absolute left-1 h-2.5 w-2.5 rounded-full bg-white transition-transform" />
-              </div>
+              <button
+                type="button"
+                onClick={() => setPatientDataEnabled(!patientDataEnabled)}
+                className={`relative inline-flex h-4 w-8 items-center rounded-full transition-colors ${
+                  patientDataEnabled ? 'bg-indigo-500' : 'bg-slate-300'
+                }`}
+              >
+                <span
+                  className={`h-2.5 w-2.5 rounded-full bg-white transition-transform ${
+                    patientDataEnabled ? 'translate-x-4' : 'translate-x-1'
+                  }`}
+                />
+              </button>
               <span className="whitespace-nowrap">Dados do paciente</span>
             </label>
 
@@ -63,9 +74,19 @@ export function Header() {
         {mobileMenuOpen && (
           <div className="md:hidden mt-4 pt-4 border-t border-slate-200 space-y-3">
             <label className="flex items-center gap-2 text-sm font-medium text-[#292965] cursor-pointer">
-              <div className="relative inline-flex h-4 w-8 items-center rounded-full bg-indigo-500">
-                <span className="absolute left-1 h-2.5 w-2.5 rounded-full bg-white transition-transform" />
-              </div>
+              <button
+                type="button"
+                onClick={() => setPatientDataEnabled(!patientDataEnabled)}
+                className={`relative inline-flex h-4 w-8 items-center rounded-full transition-colors ${
+                  patientDataEnabled ? 'bg-indigo-500' : 'bg-slate-300'
+                }`}
+              >
+                <span
+                  className={`h-2.5 w-2.5 rounded-full bg-white transition-transform ${
+                    patientDataEnabled ? 'translate-x-4' : 'translate-x-1'
+                  }`}
+                />
+              </button>
               <span>Dados do paciente</span>
             </label>
 
