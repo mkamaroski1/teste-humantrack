@@ -19,7 +19,7 @@ export function Header() {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center gap-3 lg:gap-4">
-            <label className="flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1.5 text-sm font-medium text-[#292965] shadow-inner cursor-pointer">
+            <label className="flex items-center gap-2 rounded-full bg-slate-200 px-3 py-1.5 text-sm font-medium text-[#292965] shadow-inner cursor-pointer">
               <div className="relative inline-flex h-4 w-8 items-center rounded-full bg-indigo-500">
                 <span className="absolute left-1 h-2.5 w-2.5 rounded-full bg-white transition-transform" />
               </div>
@@ -62,7 +62,7 @@ export function Header() {
         {/* Mobile Menu */}
         {mobileMenuOpen && (
           <div className="md:hidden mt-4 pt-4 border-t border-slate-200 space-y-3">
-            <label className="flex items-center gap-2 rounded-lg bg-slate-100 px-3 py-2.5 text-sm font-medium text-[#292965] shadow-inner cursor-pointer">
+            <label className="flex items-center gap-2 rounded-lg bg-slate-200 px-3 py-2.5 text-sm font-medium text-[#292965] shadow-inner cursor-pointer">
               <div className="relative inline-flex h-4 w-8 items-center rounded-full bg-indigo-500">
                 <span className="absolute left-1 h-2.5 w-2.5 rounded-full bg-white transition-transform" />
               </div>
