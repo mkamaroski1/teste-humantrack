@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { CustomSelect } from '../common/CustomSelect'
 
 type DaySchedule = {
   key: string
@@ -15,6 +16,13 @@ const INITIAL_DAYS: DaySchedule[] = [
   { key: 'friday', label: 'Sexta-feira', enabled: false, time: '12:00' },
   { key: 'saturday', label: 'Sábado', enabled: false, time: '12:00' },
   { key: 'sunday', label: 'Domingo', enabled: false, time: '12:00' },
+]
+
+const RECURRENCE_OPTIONS = [
+  { value: '', label: 'Ex: Semanalmente' },
+  { value: 'daily', label: 'Diariamente' },
+  { value: 'weekly', label: 'Semanalmente' },
+  { value: 'monthly', label: 'Mensalmente' },
 ]
 
 export function RemindersSection() {
@@ -34,32 +42,22 @@ export function RemindersSection() {
   }
 
   return (
-    <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm text-[#292965]">
+    <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm text-primary">
       <div className="grid gap-4 md:grid-cols-[1.1fr,1fr]">
         <div className="space-y-2">
-          <label className="text-sm font-semibold text-[#292965]">Recorrência da submissão</label>
-          <div className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2.5 shadow-sm transition focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-100">
-            <select
-              className={`w-full bg-transparent text-sm outline-none ${
-                recurrence ? 'text-slate-900' : 'text-slate-400'
-              }`}
-              value={recurrence}
-              onChange={(e) => setRecurrence(e.target.value)}
-            >
-              <option value="" disabled>
-                Ex: Semanalmente
-              </option>
-              <option value="daily">Diariamente</option>
-              <option value="weekly">Semanalmente</option>
-              <option value="monthly">Mensalmente</option>
-            </select>
-          </div>
+          <label className="text-sm font-semibold text-primary">Recorrência da submissão</label>
+          <CustomSelect
+            value={recurrence}
+            onChange={setRecurrence}
+            options={RECURRENCE_OPTIONS}
+            placeholder="Ex: Semanalmente"
+          />
         </div>
 
         <div className="flex flex-col gap-3">
-          <p className="text-sm font-semibold text-[#292965]">Dias de disparo</p>
+          <p className="text-sm font-semibold text-primary">Dias de disparo</p>
           {days.map((day) => (
-            <div key={day.key} className="flex items-center justify-between gap-3 text-sm text-[#292965]">
+            <div key={day.key} className="flex items-center justify-between gap-3 text-sm text-primary">
               <div className="flex items-center gap-3">
                 <Switch checked={day.enabled} onToggle={() => toggleDay(day.key)} />
                 <span className="min-w-[120px]">{day.label}</span>
@@ -71,7 +69,7 @@ export function RemindersSection() {
                 onChange={(e) => updateTime(day.key, e.target.value)}
                 className={`w-16 rounded-lg border px-2.5 py-1.5 text-sm shadow-sm outline-none transition ${
                   day.enabled
-                    ? 'border-indigo-300 bg-white text-[#292965] focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100'
+                    ? 'border-indigo-300 bg-white text-primary focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100'
                     : 'border-slate-200 bg-slate-50 text-slate-400 disabled:cursor-not-allowed'
                 }`}
               />
@@ -88,13 +86,13 @@ function Switch({ checked, onToggle }: { checked: boolean; onToggle: () => void 
     <button
       type="button"
       onClick={onToggle}
-      className={`relative h-6 w-11 rounded-full border transition ${
-        checked ? 'border-indigo-200 bg-[#6868EE]' : 'border-slate-200 bg-slate-200'
+      className={`relative h-6 w-11 rounded-full transition-all duration-300 ease-in-out ${
+        checked ? 'bg-primary-light shadow-inner' : 'bg-slate-300'
       }`}
     >
       <span
-        className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition ${
-          checked ? 'left-5' : 'left-0.5'
+        className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow-md transition-all duration-300 ease-in-out ${
+          checked ? 'left-5 scale-100' : 'left-0.5 scale-95'
         }`}
       />
     </button>

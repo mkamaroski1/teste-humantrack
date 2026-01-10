@@ -73,7 +73,7 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 text-[#292965]">
+    <div className="min-h-screen bg-slate-50 text-primary">
       <LoadingModal isOpen={isThinking} />
       <SuccessModal isOpen={showSuccessModal} onClose={() => setShowSuccessModal(false)} />
 
@@ -81,7 +81,7 @@ function App() {
 
       <main className="mx-auto max-w-6xl space-y-6 px-5 pt-2 pb-8">
         <div className="pb-2">
-          <h1 className="text-2xl font-semibold text-[#292965]">Configurar nova GAS</h1>
+          <h1 className="text-2xl font-semibold text-primary">Configurar nova GAS</h1>
         </div>
 
         <div className="grid gap-4 lg:grid-cols-[320px,1fr]">

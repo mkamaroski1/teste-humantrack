@@ -66,7 +66,7 @@ export function AiIcon({ className }: IconProps) {
   return (
     <svg
       viewBox="0 0 24 24"
-      className={className ?? 'h-6 w-6 text-[#292965]'}
+      className={className ?? 'h-6 w-6 text-primary'}
       fill="none"
       stroke="currentColor"
       strokeWidth="1.5"
