@@ -27,7 +27,7 @@ export function GasFormSection({
     <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
       <div className="space-y-6">
         <div className="space-y-2">
-          <label className="text-sm font-medium text-[#292965]">Nome da GAS</label>
+          <label className="text-sm font-medium text-primary">Nome da GAS</label>
           <input
             id="gas-name"
             className={`w-full rounded-lg border bg-white px-3 py-2.5 text-sm text-slate-900 shadow-sm outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 ${
@@ -42,7 +42,7 @@ export function GasFormSection({
 
         <div className="grid gap-4 md:grid-cols-2">
           <div className="space-y-2">
-            <label className="text-sm font-medium text-[#292965]">Data de início</label>
+            <label className="text-sm font-medium text-primary">Data de início</label>
             <div className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2.5 shadow-sm transition focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-100">
               <CalendarIcon />
               <input
@@ -54,7 +54,7 @@ export function GasFormSection({
             </div>
           </div>
           <div className="space-y-2">
-            <label className="text-sm font-medium text-[#292965]">Data final</label>
+            <label className="text-sm font-medium text-primary">Data final</label>
             <div className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2.5 shadow-sm transition focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-100">
               <CalendarIcon />
               <input
@@ -68,7 +68,7 @@ export function GasFormSection({
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-medium text-[#292965]">Problemas</label>
+          <label className="text-sm font-medium text-primary">Problemas</label>
           <HighlightedTextarea
             id="gas-problems"
             value={form.problems}
@@ -79,13 +79,13 @@ export function GasFormSection({
             hasError={!!problemsError}
           />
           {problemsError && <p className="text-xs font-semibold text-red-500">{problemsError}</p>}
-          <p className="text-xs text-[#292965]">
+          <p className="text-xs text-primary">
             Uma descrição detalhada ajuda a IA a configurar metas com base no seu objetivo.
           </p>
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-medium text-[#292965]">Objetivos</label>
+          <label className="text-sm font-medium text-primary">Objetivos</label>
           <HighlightedTextarea
             id="gas-objectives"
             value={form.objectives}
@@ -96,12 +96,12 @@ export function GasFormSection({
             hasError={!!objectivesError}
           />
           {objectivesError && <p className="text-xs font-semibold text-red-500">{objectivesError}</p>}
-          <p className="text-xs text-[#292965]">
+          <p className="text-xs text-primary">
             Uma descrição detalhada ajuda a IA a configurar metas com base no seu objetivo.
           </p>
         </div>
 
-        <div className="rounded-xl border border-indigo-100 bg-[#E9EBF8] px-4 py-3 text-sm text-slate-700">
+        <div className="rounded-xl border border-indigo-100 bg-surface-indigo px-4 py-3 text-sm text-slate-700">
           <div className="flex items-start gap-3">
             <div className="mt-1 flex h-6 w-6 items-center justify-center rounded-full bg-indigo-100 text-indigo-600">
               <InfoIcon className="h-4 w-4" />

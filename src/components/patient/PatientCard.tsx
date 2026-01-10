@@ -35,7 +35,7 @@ export function PatientCard({ form, onChange, patientError, phoneError }: Props)
     <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
       <div className="grid gap-4 md:grid-cols-[2fr_1.2fr]">
         <div className="space-y-2">
-          <label className="text-sm font-medium text-[#292965]">Paciente</label>
+          <label className="text-sm font-medium text-primary">Paciente</label>
           <div
             className={`flex items-center gap-2 rounded-lg border bg-white px-3 py-2.5 shadow-sm transition focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-100 ${
               patientError ? 'border-red-400' : 'border-slate-200'
@@ -61,7 +61,7 @@ export function PatientCard({ form, onChange, patientError, phoneError }: Props)
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-medium text-[#292965]">Telefone</label>
+          <label className="text-sm font-medium text-primary">Telefone</label>
           <div
             className={`flex items-center gap-2 rounded-lg border bg-white px-3 py-2.5 shadow-sm transition focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-100 ${
               phoneError ? 'border-red-400' : 'border-slate-200'

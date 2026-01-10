@@ -36,7 +36,7 @@ export function GoalsSection({
   onAdd,
 }: GoalsSectionProps) {
   return (
-    <div className="space-y-4 text-[#292965]">
+    <div className="space-y-4 text-primary">
       {goalsError && (
         <p className="text-xs font-semibold text-red-500">{goalsError}</p>
       )}
@@ -96,7 +96,7 @@ function GoalCard({
     <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
       <div className="space-y-3">
         <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
-          <p className="text-sm font-semibold text-[#292965]">Meta {index}</p>
+          <p className="text-sm font-semibold text-primary">Meta {index}</p>
           <div className="flex items-center gap-2">
             <button
               type="button"
@@ -119,7 +119,7 @@ function GoalCard({
           </div>
         </div>
         <div className="space-y-1">
-          <label className="text-sm font-medium text-[#292965]">Nome</label>
+          <label className="text-sm font-medium text-primary">Nome</label>
           <input
             id={`goal-${goal.id}-name`}
             className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 shadow-sm outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
@@ -131,9 +131,9 @@ function GoalCard({
       </div>
 
       <div className="mt-4 space-y-2">
-        <p className="text-sm font-medium text-[#292965]">Linha base da Meta</p>
+        <p className="text-sm font-medium text-primary">Linha base da Meta</p>
         <div className="flex flex-col gap-2">
-          <label className="flex items-center gap-2 text-sm text-[#292965]">
+          <label className="flex items-center gap-2 text-sm text-primary">
             <input
               type="radio"
               name={`baseline-${goal.id}`}
@@ -144,7 +144,7 @@ function GoalCard({
             />
             Nível 0
           </label>
-          <label className="flex items-center gap-2 text-sm text-[#292965]">
+          <label className="flex items-center gap-2 text-sm text-primary">
             <input
               type="radio"
               name={`baseline-${goal.id}`}
@@ -158,7 +158,7 @@ function GoalCard({
         </div>
       </div>
 
-      <div className="mt-4 rounded-xl border border-indigo-100 bg-[#E9EBF8] px-4 py-3 text-sm text-slate-700">
+      <div className="mt-4 rounded-xl border border-indigo-100 bg-surface-indigo px-4 py-3 text-sm text-slate-700">
         <div className="flex items-start gap-3">
           <div className="mt-1 flex h-6 w-6 items-center justify-center rounded-full bg-indigo-100 text-indigo-600">
             <InfoIcon className="h-4 w-4" />
@@ -212,15 +212,15 @@ function renderLevelGroup(
   return (
     <div className="space-y-3 border-t border-slate-200 pt-4 first:border-t-0 first:pt-0">
       <div className="flex items-center gap-2">
-        <p className="text-sm font-semibold text-[#292965]">{title}</p>
-        {highlight && <AiIcon className="h-4 w-4 text-[#4ef0a3]" />}
+        <p className="text-sm font-semibold text-primary">{title}</p>
+        {highlight && <AiIcon className="h-4 w-4 text-ai-green" />}
       </div>
       <div className="space-y-3">
         {orderedLevels.map((level) => (
           <div key={level} className="flex flex-col gap-1">
-            <p className="pl-12 text-sm font-semibold text-[#292965]">{`Meta ${level}`}</p>
+            <p className="pl-12 text-sm font-semibold text-primary">{`Meta ${level}`}</p>
             <div className="flex items-center gap-3">
-              <span className="flex h-9 w-9 items-center justify-center rounded-md border-[0.5px] border-[#7375FC] bg-slate-100 text-sm font-bold text-[#6868EE]">
+              <span className="flex h-9 w-9 items-center justify-center rounded-md border-[0.5px] border-primary-border bg-slate-100 text-sm font-bold text-primary-light">
                 {LEVEL_BADGES[level]}
               </span>
               {highlight ? (
@@ -233,7 +233,7 @@ function renderLevelGroup(
                     onChange={(e) => onLevelChange(goal.id, level, e.target.value)}
                   />
                   <span className="pointer-events-none absolute -top-4 -right-4">
-                    <WandIcon className="h-4 w-4 text-[#7c7cff]" />
+                    <WandIcon className="h-4 w-4 text-primary-purple" />
                   </span>
                 </div>
               ) : (

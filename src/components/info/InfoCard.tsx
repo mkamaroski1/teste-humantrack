@@ -10,8 +10,8 @@ export function InfoCard({ title, description, children }: InfoCardProps) {
   return (
     <div className="space-y-3">
       <div className="space-y-2">
-        <h2 className="text-sm font-semibold text-[#292965]">{title}</h2>
-        <p className="text-sm leading-relaxed text-[#292965]">{description}</p>
+        <h2 className="text-sm font-semibold text-primary">{title}</h2>
+        <p className="text-sm leading-relaxed text-primary">{description}</p>
       </div>
       {children}
     </div>

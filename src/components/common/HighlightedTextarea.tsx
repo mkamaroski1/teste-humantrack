@@ -35,7 +35,7 @@ export function HighlightedTextarea({
           onChange={(e) => onChange(e.target.value)}
         />
         <span className="pointer-events-none absolute -top-4 -right-4">
-          <WandIcon className="h-4 w-4 text-[#7c7cff]" />
+          <WandIcon className="h-4 w-4 text-primary-purple" />
         </span>
       </div>
     )
