@@ -149,6 +149,125 @@ describe('Hooks - Integration Tests', () => {
       expect(result.current.goals[1].levels['2']).toBe('Nivel +2 teste')
     })
 
+    it('deve garantir que meta duplicada seja independente (deep clone)', () => {
+      const { result } = renderHook(() => useGoals())
+
+      const goalId = result.current.goals[0].id
+
+      act(() => {
+        result.current.updateGoal(goalId, { 
+          name: 'Meta Original',
+          baseline: '-1',
+        })
+        result.current.updateGoalLevel(goalId, '2', 'Nivel Original')
+        result.current.updateGoalLevel(goalId, '1', 'Nivel 1 Original')
+      })
+
+      act(() => {
+        result.current.cloneGoal(goalId)
+      })
+
+      const originalGoal = result.current.goals[0]
+      const clonedGoal = result.current.goals[1]
+
+      // Verifica que são objetos diferentes (não compartilham referência)
+      expect(originalGoal).not.toBe(clonedGoal)
+      expect(originalGoal.id).not.toBe(clonedGoal.id)
+
+      // Modifica a meta original
+      act(() => {
+        result.current.updateGoal(originalGoal.id, { name: 'Meta Original Modificada' })
+        result.current.updateGoalLevel(originalGoal.id, '2', 'Nivel Modificado')
+        result.current.updateGoalLevel(originalGoal.id, '1', 'Nivel 1 Modificado')
+      })
+
+      // Verifica que a cópia NÃO foi afetada (independência garantida por deep clone)
+      expect(clonedGoal.name).toBe('Meta Original')
+      expect(result.current.goals[1].levels['2']).toBe('Nivel Original')
+      expect(result.current.goals[1].levels['1']).toBe('Nivel 1 Original')
+
+      // Modifica a cópia
+      act(() => {
+        result.current.updateGoal(clonedGoal.id, { name: 'Meta Copia Modificada' })
+        result.current.updateGoalLevel(clonedGoal.id, '2', 'Nivel Copia Modificado')
+      })
+
+      // Verifica que a original NÃO foi afetada
+      expect(result.current.goals[0].name).toBe('Meta Original Modificada')
+      expect(result.current.goals[0].levels['2']).toBe('Nivel Modificado')
+    })
+
+    it('deve garantir que objetos aninhados (levels) sejam independentes após duplicação', () => {
+      const { result } = renderHook(() => useGoals())
+
+      const goalId = result.current.goals[0].id
+
+      act(() => {
+        result.current.updateGoalLevel(goalId, '2', 'Nivel +2')
+        result.current.updateGoalLevel(goalId, '1', 'Nivel +1')
+        result.current.updateGoalLevel(goalId, '0', 'Nivel 0')
+      })
+
+      act(() => {
+        result.current.cloneGoal(goalId)
+      })
+
+      const originalLevels = result.current.goals[0].levels
+      const clonedLevels = result.current.goals[1].levels
+
+      // Verifica que levels são objetos diferentes (deep clone de objetos aninhados)
+      expect(originalLevels).not.toBe(clonedLevels)
+
+      // Modifica levels da original
+      act(() => {
+        result.current.updateGoalLevel(result.current.goals[0].id, '2', 'Nivel Modificado')
+      })
+
+      // Verifica que levels da cópia NÃO foram afetados
+      expect(clonedLevels['2']).toBe('Nivel +2')
+      expect(result.current.goals[1].levels['2']).toBe('Nivel +2')
+    })
+
+    it('deve garantir que updateGoal cria nova referência (não muta original)', () => {
+      const { result } = renderHook(() => useGoals())
+
+      const goalId = result.current.goals[0].id
+      const goalBefore = result.current.goals[0]
+
+      act(() => {
+        result.current.updateGoal(goalId, { name: 'Meta Atualizada' })
+      })
+
+      const goalAfter = result.current.goals[0]
+
+      // Verifica que é uma nova referência (imutabilidade)
+      expect(goalBefore).not.toBe(goalAfter)
+      expect(goalAfter.name).toBe('Meta Atualizada')
+    })
+
+    it('deve garantir que updateGoalLevel cria nova referência para levels (deep clone)', () => {
+      const { result } = renderHook(() => useGoals())
+
+      const goalId = result.current.goals[0].id
+
+      act(() => {
+        result.current.updateGoalLevel(goalId, '2', 'Nivel Inicial')
+      })
+
+      const levelsBefore = result.current.goals[0].levels
+
+      act(() => {
+        result.current.updateGoalLevel(goalId, '1', 'Novo Nivel')
+      })
+
+      const levelsAfter = result.current.goals[0].levels
+
+      // Verifica que levels é uma nova referência (deep clone garante imutabilidade)
+      expect(levelsBefore).not.toBe(levelsAfter)
+      expect(levelsAfter['2']).toBe('Nivel Inicial')
+      expect(levelsAfter['1']).toBe('Novo Nivel')
+    })
+
     it('deve resetar para uma meta vazia', () => {
       const { result } = renderHook(() => useGoals())
 
