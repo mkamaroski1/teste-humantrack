@@ -1,19 +1,41 @@
 import { useState, useCallback } from 'react'
 import type { Goal, GoalLevelKey } from '../types/goals'
 import { createEmptyGoal, duplicateGoal } from '../utils/goal-factory'
+import { cloneWithOverride, deepClone } from '../utils/clone'
 
 export function useGoals() {
   const [goals, setGoals] = useState<Goal[]>([createEmptyGoal(1)])
 
+  /**
+   * Atualiza uma meta com deep clone para garantir imutabilidade
+   * 
+   * CRÍTICO: Se 'data' contém objetos aninhados (ex: metadata, history),
+   * precisamos garantir que não compartilhem referências com o state anterior
+   */
   const updateGoal = useCallback((goalId: string, data: Partial<Goal>) => {
-    setGoals((prev) => prev.map((goal) => (goal.id === goalId ? { ...goal, ...data } : goal)))
-  }, [])
-
-  const updateGoalLevel = useCallback((goalId: string, level: GoalLevelKey, value: string) => {
     setGoals((prev) =>
       prev.map((goal) =>
-        goal.id === goalId ? { ...goal, levels: { ...goal.levels, [level]: value } } : goal,
-      ),
+        goal.id === goalId ? cloneWithOverride(goal, data) : goal
+      )
+    )
+  }, [])
+
+  /**
+   * Atualiza um nível específico com deep clone dos levels
+   * 
+   * CRÍTICO: Em produção, levels pode ser Record<string, ComplexObject>
+   * Deep clone garante imutabilidade total
+   */
+  const updateGoalLevel = useCallback((goalId: string, level: GoalLevelKey, value: string) => {
+    setGoals((prev) =>
+      prev.map((goal) => {
+        if (goal.id !== goalId) return goal
+        
+        const clonedLevels = deepClone(goal.levels)
+        clonedLevels[level] = value
+        
+        return { ...goal, levels: clonedLevels }
+      })
     )
   }, [])
 

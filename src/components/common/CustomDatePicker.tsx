@@ -1,5 +1,12 @@
 import { useState, useRef, useEffect } from 'react'
 import { CalendarIcon } from './icons'
+import {
+  getDaysInMonth,
+  getFirstDayOfMonth,
+  formatDateDisplay,
+  formatDateInput,
+  parseInputToISO,
+} from '../../utils/date'
 
 type CustomDatePickerProps = {
   value: string
@@ -29,61 +36,6 @@ export function CustomDatePicker({ value, onChange }: CustomDatePickerProps) {
       return () => document.removeEventListener('mousedown', handleClickOutside)
     }
   }, [isOpen])
-
-  function getDaysInMonth(month: number, year: number) {
-    return new Date(year, month + 1, 0).getDate()
-  }
-
-  function getFirstDayOfMonth(month: number, year: number) {
-    return new Date(year, month, 1).getDay()
-  }
-
-  function formatDateDisplay(dateStr: string) {
-    if (!dateStr) return ''
-    const date = new Date(dateStr + 'T00:00:00')
-    const day = String(date.getDate()).padStart(2, '0')
-    const month = String(date.getMonth() + 1).padStart(2, '0')
-    const year = date.getFullYear()
-    return `${day}/${month}/${year}`
-  }
-
-  function formatDateInput(value: string): string {
-    // Remove tudo que não é número
-    const numbers = value.replace(/\D/g, '')
-    
-    // Limita a 8 dígitos (DDMMAAAA)
-    const limited = numbers.slice(0, 8)
-    
-    // Aplica a máscara DD/MM/AAAA
-    if (limited.length <= 2) {
-      return limited
-    } else if (limited.length <= 4) {
-      return `${limited.slice(0, 2)}/${limited.slice(2)}`
-    } else {
-      return `${limited.slice(0, 2)}/${limited.slice(2, 4)}/${limited.slice(4)}`
-    }
-  }
-
-  function parseInputToISO(input: string): string | null {
-    // Espera formato DD/MM/AAAA
-    const parts = input.split('/')
-    if (parts.length !== 3) return null
-    
-    const day = parseInt(parts[0], 10)
-    const month = parseInt(parts[1], 10) - 1
-    const year = parseInt(parts[2], 10)
-    
-    // Validação básica
-    if (isNaN(day) || isNaN(month) || isNaN(year)) return null
-    if (day < 1 || day > 31) return null
-    if (month < 0 || month > 11) return null
-    if (year < 1900 || year > 2100) return null
-    
-    const date = new Date(year, month, day)
-    if (date.getDate() !== day || date.getMonth() !== month) return null
-    
-    return date.toISOString().split('T')[0]
-  }
 
   // Sincroniza inputValue com selectedDate
   useEffect(() => {

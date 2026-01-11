@@ -1,9 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-
-type Option = {
-  value: string
-  label: string
-}
+import type { Option } from '../../types/common'
 
 type CustomSelectProps = {
   id?: string

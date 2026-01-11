@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react'
 import type { Goal } from '../types/goals'
+import type { SuggestionState } from '../types/ai'
 import { 
   LEVEL_SUGGESTIONS_BASELINE_0, 
   LEVEL_SUGGESTIONS_BASELINE_MINUS_1,
@@ -7,13 +8,7 @@ import {
   HIGHLIGHT_DURATION 
 } from '../constants/goals'
 import { focusElement } from '../utils/focus'
-
-type SuggestionState = {
-  isSuggestingMeta: boolean
-  suggestingGoalId: string | null
-  metaHighlight: boolean
-  goalHighlightId: string | null
-}
+import { deepClone } from '../utils/clone'
 
 export function useAISuggestions() {
   const [state, setState] = useState<SuggestionState>({
@@ -32,6 +27,7 @@ export function useAISuggestions() {
     setState((prev) => ({ ...prev, isSuggestingMeta: true }))
 
     setTimeout(() => {
+      // Simula resposta de LLM/API
       const suggestedName = 'Comunicação verbal na sala de aula'
 
       if (firstGoalId) {
@@ -49,6 +45,20 @@ export function useAISuggestions() {
     }, AI_SIMULATION_DELAY)
   }, [])
 
+  /**
+   * Sugere níveis usando IA (simulado)
+   * 
+   * CRÍTICO: Em produção real, 'suggestions' viria de uma API (fetch/axios)
+   * Deep clone garante que dados da API não compartilhem referências com state
+   * Exemplo real:
+   * 
+   * const response = await fetch('/api/suggest-levels', {
+   *   method: 'POST',
+   *   body: JSON.stringify({ goalName, baseline, problems, objectives })
+   * })
+   * const suggestions = await response.json()
+   * onUpdateGoal(goalId, { levels: deepClone(suggestions.levels) })
+   */
   const suggestLevels = useCallback((
     goalId: string,
     goalBaseline: '0' | '-1',
@@ -62,7 +72,8 @@ export function useAISuggestions() {
         ? LEVEL_SUGGESTIONS_BASELINE_MINUS_1 
         : LEVEL_SUGGESTIONS_BASELINE_0
 
-      onUpdateGoal(goalId, { levels: { ...suggestions } })
+      // Deep clone dos dados "vindos da API" para garantir imutabilidade
+      onUpdateGoal(goalId, { levels: deepClone(suggestions) })
 
       setState((prev) => ({ ...prev, suggestingGoalId: null, goalHighlightId: goalId }))
       setTimeout(() => {

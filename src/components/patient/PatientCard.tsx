@@ -1,5 +1,6 @@
 import { CustomSelect } from '../common/CustomSelect'
 import type { GasForm } from '../../types/gas'
+import { formatPhone } from '../../utils/formatters'
 
 type Props = {
   form: GasForm
@@ -15,28 +16,9 @@ const PATIENT_OPTIONS = [
   { value: 'gustavo', label: 'Gustavo' },
 ]
 
-function formatPhoneNumber(value: string): string {
-  // Remove tudo que não é dígito
-  const numbers = value.replace(/\D/g, '')
-  
-  // Limita a 11 dígitos
-  const limited = numbers.slice(0, 11)
-  
-  // Aplica a máscara (XX) XXXXX-XXXX ou (XX) XXXX-XXXX
-  if (limited.length <= 2) {
-    return limited
-  } else if (limited.length <= 6) {
-    return `(${limited.slice(0, 2)}) ${limited.slice(2)}`
-  } else if (limited.length <= 10) {
-    return `(${limited.slice(0, 2)}) ${limited.slice(2, 6)}-${limited.slice(6)}`
-  } else {
-    return `(${limited.slice(0, 2)}) ${limited.slice(2, 7)}-${limited.slice(7, 11)}`
-  }
-}
-
 export function PatientCard({ form, onChange, patientError, phoneError }: Props) {
   function handlePhoneChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const formatted = formatPhoneNumber(e.target.value)
+    const formatted = formatPhone(e.target.value)
     onChange('phone', formatted)
   }
   return (

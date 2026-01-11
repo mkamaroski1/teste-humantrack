@@ -1,11 +1,15 @@
 import { useState } from 'react'
 import { CustomSelect } from '../common/CustomSelect'
+import { deepClone } from '../../utils/clone'
 
 type DaySchedule = {
   key: string
   label: string
   enabled: boolean
   time: string
+  // Em produção, poderia ter:
+  // notifications?: { whatsapp: boolean; email: boolean; sms: boolean }
+  // history?: DayScheduleChange[]
 }
 
 const INITIAL_DAYS: DaySchedule[] = [
@@ -29,15 +33,29 @@ export function RemindersSection() {
   const [recurrence, setRecurrence] = useState('')
   const [days, setDays] = useState<DaySchedule[]>(INITIAL_DAYS)
 
+  /**
+   * CRÍTICO: Deep clone garante imutabilidade total
+   * Em produção, DaySchedule poderia ter objetos aninhados (notifications, history)
+   */
   function toggleDay(key: string) {
     setDays((prev) =>
-      prev.map((day) => (day.key === key ? { ...day, enabled: !day.enabled } : day)),
+      prev.map((day) => {
+        if (day.key !== key) return day
+        const cloned = deepClone(day)
+        cloned.enabled = !cloned.enabled
+        return cloned
+      })
     )
   }
 
   function updateTime(key: string, value: string) {
     setDays((prev) =>
-      prev.map((day) => (day.key === key ? { ...day, time: value } : day)),
+      prev.map((day) => {
+        if (day.key !== key) return day
+        const cloned = deepClone(day)
+        cloned.time = value
+        return cloned
+      })
     )
   }
 

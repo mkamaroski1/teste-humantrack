@@ -1,19 +1,6 @@
 import type { GasForm } from '../types/gas'
 import type { Goal, GoalLevelKey } from '../types/goals'
-
-export type ValidationErrors = {
-  name?: string
-  patient?: string
-  phone?: string
-  goals?: string
-  problems?: string
-  objectives?: string
-}
-
-type ValidationResult = {
-  errors: ValidationErrors
-  focusTarget: string | null
-}
+import type { ValidationErrors, ValidationResult } from '../types/validation'
 
 export function validateGasForm(form: GasForm, goals: Goal[]): ValidationResult {
   const errors: ValidationErrors = {}

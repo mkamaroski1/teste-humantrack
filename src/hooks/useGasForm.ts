@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react'
 import type { GasForm } from '../types/gas'
-import type { ValidationErrors } from '../utils/validation'
+import type { ValidationErrors } from '../types/validation'
 
 const INITIAL_FORM_STATE: GasForm = {
   name: '',
@@ -25,14 +25,26 @@ export function useGasForm() {
     setErrors({})
   }, [])
 
+  /**
+   * Limpa erros com imutabilidade garantida
+   * 
+   * CRÍTICO: Não mutamos o objeto diretamente (delete)
+   * Criamos um novo objeto apenas com os campos que queremos manter
+   */
   const clearErrors = useCallback((fields?: (keyof ValidationErrors)[]) => {
     if (!fields) {
       setErrors({})
       return
     }
     setErrors((prev) => {
-      const newErrors = { ...prev }
-      fields.forEach((field) => delete newErrors[field])
+      // Imutável: cria novo objeto filtrando campos a remover
+      const newErrors: ValidationErrors = {}
+      Object.keys(prev).forEach((key) => {
+        const typedKey = key as keyof ValidationErrors
+        if (!fields.includes(typedKey)) {
+          newErrors[typedKey] = prev[typedKey]
+        }
+      })
       return newErrors
     })
   }, [])

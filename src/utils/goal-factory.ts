@@ -1,4 +1,5 @@
 import type { Goal } from '../types/goals'
+import { deepClone } from './clone'
 
 export function createEmptyGoal(index: number): Goal {
   return {
@@ -9,9 +10,18 @@ export function createEmptyGoal(index: number): Goal {
   }
 }
 
+/**
+ * Duplica uma meta com deep clone para garantir imutabilidade
+ * 
+ * CRÍTICO: Em produção com dados de API/LLM, a meta pode conter:
+ * - metadata: { suggestedBy, confidence, timestamps[] }
+ * - history: GoalVersion[]
+ * - attachments: File[]
+ * 
+ * Deep clone garante que a duplicação não compartilhe referências
+ */
 export function duplicateGoal(goal: Goal, newId: string): Goal {
-  return {
-    ...goal,
-    id: newId,
-  }
+  const cloned = deepClone(goal)
+  cloned.id = newId
+  return cloned
 }
