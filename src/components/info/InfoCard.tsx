@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 
 type InfoCardProps = {
   title: string
-  description: string
+  description: string | ReactNode
   children?: ReactNode
 }
 

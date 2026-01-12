@@ -1,4 +1,5 @@
 import { CustomSelect } from '../common/CustomSelect'
+import { WandIcon } from '../common/icons'
 import type { GasForm } from '../../types/gas'
 import { formatPhone } from '../../utils/formatters'
 
@@ -23,7 +24,7 @@ export function PatientCard({ form, onChange, patientError, phoneError }: Props)
   }
   return (
     <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-      <div className="grid gap-4 md:grid-cols-[2fr_1.2fr]">
+      <div className="grid gap-4 md:grid-cols-2">
         <div className="space-y-2">
           <label className="text-sm font-medium text-primary">Paciente</label>
           <CustomSelect
@@ -52,19 +53,7 @@ export function PatientCard({ form, onChange, patientError, phoneError }: Props)
               value={form.phone}
               onChange={handlePhoneChange}
             />
-            <svg
-              viewBox="0 0 20 20"
-              className="h-4 w-4 text-slate-500"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-            >
-              <path
-                d="M4 15.5 6.5 13l2 2L14 9M9 5h6a1 1 0 0 1 1 1v8.5a1 1 0 0 1-1 1h-2.5M4 5h1"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            <WandIcon className="h-4 w-4 text-slate-500" />
           </div>
           {phoneError && <p className="text-xs font-semibold text-red-500">{phoneError}</p>}
         </div>

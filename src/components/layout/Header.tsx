@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import userIcon from '../../assets/icons/user.svg'
+import { UserIcon } from '../common/icons'
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -10,35 +10,33 @@ export function Header() {
       <div className="mx-auto max-w-6xl px-4 sm:px-5 py-3 sm:py-4 md:py-5 lg:py-6 text-primary">
         <div className="flex items-center justify-between">
           {/* Logo / Breadcrumb - Responsivo */}
-          <nav className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm">
-            <span className="cursor-pointer transition hover:text-indigo-600">Home</span>
-            <span className="text-primary/60">/</span>
-            <span className="cursor-pointer transition hover:text-indigo-600">GAS</span>
-            <span className="text-primary/60">/</span>
-            <span className="font-semibold truncate max-w-[100px] sm:max-w-none">Nova GAS</span>
+          <nav className="flex items-center gap-1.5 sm:gap-2 text-sm leading-normal">
+            <span className="cursor-pointer font-normal text-[#71717A] transition hover:text-indigo-600">Home</span>
+            <span className="text-[#71717A]">&gt;</span>
+            <span className="cursor-pointer font-normal text-[#71717A] transition hover:text-indigo-600">GAS</span>
+            <span className="text-[#71717A]">&gt;</span>
+            <span className="font-medium truncate max-w-[100px] sm:max-w-none">Nova GAS</span>
           </nav>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center gap-3 lg:gap-4">
+          <div className="hidden md:flex items-center gap-4 lg:gap-5">
             <label className="flex items-center gap-2 text-sm font-medium text-primary cursor-pointer">
               <button
                 type="button"
                 onClick={() => setPatientDataEnabled(!patientDataEnabled)}
-                className={`relative inline-flex h-4 w-8 items-center rounded-full transition-colors ${
-                  patientDataEnabled ? 'bg-indigo-500' : 'bg-slate-300'
-                }`}
+                className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${patientDataEnabled ? 'bg-indigo-500' : 'bg-slate-300'
+                  }`}
               >
                 <span
-                  className={`h-2.5 w-2.5 rounded-full bg-white transition-transform ${
-                    patientDataEnabled ? 'translate-x-4' : 'translate-x-1'
-                  }`}
+                  className={`h-4 w-4 rounded-full bg-white transition-transform ${patientDataEnabled ? 'translate-x-[18px]' : 'translate-x-0.5'
+                    }`}
                 />
               </button>
               <span className="whitespace-nowrap">Dados do paciente</span>
             </label>
 
-            <button className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-primary shadow-sm transition hover:border-slate-300 hover:shadow">
-              <img src={userIcon} alt="" className="h-4 w-4" />
+            <button className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-[#71717A] shadow-sm transition hover:border-slate-300 hover:shadow">
+              <UserIcon className="h-4 w-4" />
               <span className="whitespace-nowrap">Minha conta</span>
               <svg
                 viewBox="0 0 16 16"
@@ -77,21 +75,19 @@ export function Header() {
               <button
                 type="button"
                 onClick={() => setPatientDataEnabled(!patientDataEnabled)}
-                className={`relative inline-flex h-4 w-8 items-center rounded-full transition-colors ${
-                  patientDataEnabled ? 'bg-indigo-500' : 'bg-slate-300'
-                }`}
+                className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${patientDataEnabled ? 'bg-indigo-500' : 'bg-slate-300'
+                  }`}
               >
                 <span
-                  className={`h-2.5 w-2.5 rounded-full bg-white transition-transform ${
-                    patientDataEnabled ? 'translate-x-4' : 'translate-x-1'
-                  }`}
+                  className={`h-4 w-4 rounded-full bg-white transition-transform ${patientDataEnabled ? 'translate-x-[18px]' : 'translate-x-0.5'
+                    }`}
                 />
               </button>
               <span>Dados do paciente</span>
             </label>
 
-            <button className="w-full inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm font-medium text-primary shadow-sm transition hover:border-slate-300 hover:shadow">
-              <img src={userIcon} alt="" className="h-4 w-4" />
+            <button className="w-full inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm font-medium text-[#71717A] shadow-sm transition hover:border-slate-300 hover:shadow">
+              <UserIcon className="h-4 w-4" />
               <span>Minha conta</span>
               <svg
                 viewBox="0 0 16 16"
