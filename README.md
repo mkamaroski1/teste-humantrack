@@ -149,20 +149,20 @@ npm run test:coverage
 ## Funcionalidades
 
 ### 1. Formulário GAS
-- Nome da GAS
-- Datas de início e fim
-- Problemas e objetivos clínicos
-- **Sugestão automática de meta** via IA (simulação)
+- Nome da GAS (preenchimento manual obrigatório)
+- Datas de início e fim (com calendário customizado e digitação manual)
+- Problemas e objetivos clínicos (inputs do usuário)
+- **Sugestão de nome para meta** via IA (simulação baseada em Problemas e Objetivos)
 
 ### 2. Gerenciamento de Pacientes
-- Seleção de paciente
+- Seleção de paciente (dropdown customizado com animações)
 - Telefone para WhatsApp
-- Máscara de telefone automática
+- Máscara de telefone automática (XX) XXXXX-XXXX
 
 ### 3. Lembretes
-- Configuração de recorrência
+- Configuração de recorrência (select customizado)
 - Dias e horários de disparo
-- Toggle visual para cada dia
+- Switches animados para cada dia da semana
 
 ### 4. Metas (Goals)
 - Múltiplas metas por GAS
@@ -182,6 +182,18 @@ npm run test:coverage
 - Highlight em campos afetados pela IA (simulação)
 - Animações suaves
 - Modal de sucesso
+
+### 7. Componentes Customizados
+- **CustomSelect**: Dropdown com bordas arredondadas, animações e validação
+- **CustomDatePicker**: Calendário visual + digitação manual (DD/MM/AAAA)
+- **Switches animados**: Transições suaves para toggles
+- **Design System**: Cores padronizadas com Tailwind (primary, ai, surface)
+
+### 8. Animações
+- **Efeito Aurora**: Gradiente animado infinito nos botões de sugestão de IA com duas camadas sobrepostas para eliminar resets visíveis
+- **Brilho (Glow)**: Efeito de iluminação ao redor dos botões com box-shadow animado
+- **Neon Border**: Borda pulsante em campos destacados pela IA
+- **Transições suaves**: Animações de loading, pulse e hover em todos os componentes interativos
 
 ## Licença
 
