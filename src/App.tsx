@@ -22,6 +22,7 @@ function App() {
     isSuggestingMeta,
     suggestingGoalId,
     goalHighlightId,
+    metaHighlight,
     suggestMeta,
     suggestLevels,
   } = useAISuggestions()
@@ -43,15 +44,18 @@ function App() {
     suggestMeta(firstGoalId, updateGoal)
   }
 
+  const [goalNameErrorId, setGoalNameErrorId] = useState<string | null>(null)
+
   function handleSuggestLevels(goalId: string) {
     const goal = goals.find((g) => g.id === goalId)
 
     if (!goal || !goal.name.trim()) {
-      setErrors({ goals: 'Informe o nome da meta antes de sugerir níveis.' })
+      setGoalNameErrorId(goalId)
       focusElement(`goal-${goalId}-name`)
       return
     }
 
+    setGoalNameErrorId(null)
     suggestLevels(goalId, goal.baseline, updateGoal)
   }
 
@@ -69,6 +73,7 @@ function App() {
     // Salva com sucesso - limpa IMEDIATAMENTE
     resetForm()
     resetGoals()
+    setGoalNameErrorId(null)
     setShowSuccessModal(true)
   }
 
@@ -91,7 +96,13 @@ function App() {
         <div className="grid gap-4 lg:grid-cols-[320px,1fr]">
           <InfoCard
             title="Detalhes da GAS"
-            description="Defina o contexto clínico da GAS. Essas informações ajudam a organizar o acompanhamento e melhoram as sugestões da IA."
+            description={
+              <>
+                Defina o contexto clínico da GAS. Essas informações ajudam a organizar o acompanhamento e melhoram as
+                <br />
+                sugestões da IA.
+              </>
+            }
           />
           <GasFormSection
             form={form}
@@ -159,8 +170,15 @@ function App() {
             goals={goals}
             isSuggestingId={suggestingGoalId}
             highlightGoalId={goalHighlightId}
+            metaHighlight={metaHighlight}
             goalsError={errors.goals}
-            onGoalChange={updateGoal}
+            goalNameErrorId={goalNameErrorId}
+            onGoalChange={(goalId, data) => {
+              if (goalNameErrorId === goalId) {
+                setGoalNameErrorId(null)
+              }
+              updateGoal(goalId, data)
+            }}
             onLevelChange={updateGoalLevel}
             onSuggestLevels={handleSuggestLevels}
             onDuplicate={cloneGoal}

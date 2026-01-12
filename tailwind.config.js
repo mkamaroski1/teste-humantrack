@@ -27,11 +27,16 @@ export default {
           DEFAULT: '#F7F7FA',
           indigo: '#E9EBF8',
         },
-      },
-    },
-  },
-  plugins: [],
-}
+        // Cores de texto neutras
+                muted: {
+                  DEFAULT: '#71717A',
+                },
+                input: '#F3F3F3',
+              },
+            },
+          },
+          plugins: [],
+        }
 
 
 

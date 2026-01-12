@@ -62,13 +62,13 @@ export function GasFormSection({
             id="gas-problems"
             value={form.problems}
             onChange={(value) => onChange('problems', value)}
-            placeholder="Descreva o principal problema funcional..."
+            placeholder="Descreva o principal problema funcional, o contexto em que ocorre e como isso impacta o paciente. Ex.: 'Dificuldade em iniciar comunicação verbal na sala de aula'"
             rows={3}
             isHighlighted={false}
             hasError={!!problemsError}
           />
           {problemsError && <p className="text-xs font-semibold text-red-500">{problemsError}</p>}
-          <p className="text-xs text-primary">
+          <p className="text-sm leading-normal text-[#71717A]">
             Uma descrição detalhada ajuda a IA a configurar metas com base no seu objetivo.
           </p>
         </div>
@@ -79,13 +79,13 @@ export function GasFormSection({
             id="gas-objectives"
             value={form.objectives}
             onChange={(value) => onChange('objectives', value)}
-            placeholder="Descreva o resultado esperado..."
+            placeholder="Descreva o resultado esperado e como você vai reconhecer melhora. Inclua métricas, frequência e prazo. Ex.: 'Aumentar a comunicação verbal na sala de aula para 8 vezes por sessão, por 2 meses.'"
             rows={3}
             isHighlighted={false}
             hasError={!!objectivesError}
           />
           {objectivesError && <p className="text-xs font-semibold text-red-500">{objectivesError}</p>}
-          <p className="text-xs text-primary">
+          <p className="text-sm leading-normal text-[#71717A]">
             Uma descrição detalhada ajuda a IA a configurar metas com base no seu objetivo.
           </p>
         </div>
@@ -97,17 +97,17 @@ export function GasFormSection({
             </div>
             <div className="flex-1 space-y-1">
               <p className="font-semibold text-indigo-700">
-                IA da HumanTrack gera sugestao de nome para meta
+                Use IA da HumanTrack para gerar sugestões SMART baseadas no título da meta
               </p>
               <p className="text-xs text-indigo-600">
-                Preencha "Problemas" e "Objetivos" e clique no botao. A IA vai ler e sugerir um nome para sua primeira meta.
+                Inclua detalhes específicos como métricas, percentuais e prazos para melhores resultados
               </p>
             </div>
           </div>
           <div className="mt-3 pl-9">
             <button
               onClick={onSuggestMeta}
-              className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold text-white shadow-sm transition duration-500 bg-[linear-gradient(120deg,#2dd4ff,#5df2c9,#3bb8ff,#4ef0a3,#2dd4ff)] bg-[length:400%_400%] hover:shadow-md animate-aurora ${
+              className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold text-white shadow-sm transition duration-500 hover:shadow-md animate-aurora ${
                 isSuggesting ? 'animate-pulse' : ''
               }`}
               disabled={isSuggesting}
@@ -118,7 +118,7 @@ export function GasFormSection({
             {isSuggesting && (
               <div className="mt-2 space-y-1">
                 <p className="text-xs font-medium text-indigo-700">Pensando na tela...</p>
-                <div className="h-2 rounded-full bg-[linear-gradient(120deg,#2dd4ff,#5df2c9,#3bb8ff,#4ef0a3,#2dd4ff)] bg-[length:400%_400%] animate-aurora" />
+                <div className="h-2 rounded-full animate-aurora" />
               </div>
             )}
           </div>

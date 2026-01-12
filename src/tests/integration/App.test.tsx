@@ -136,7 +136,7 @@ describe('App - Integration Tests', () => {
       render(<App />)
 
       // Tenta salvar sem preencher Nome da GAS
-      const saveButton = screen.getByRole('button', { name: /salvar gas/i })
+      const saveButton = screen.getByRole('button', { name: /salvar/i })
       await user.click(saveButton)
 
       // Deve mostrar erro
@@ -154,7 +154,7 @@ describe('App - Integration Tests', () => {
       await user.type(gasNameInput, 'Minha GAS')
 
       // Tenta salvar sem selecionar paciente
-      const saveButton = screen.getByRole('button', { name: /salvar gas/i })
+      const saveButton = screen.getByRole('button', { name: /salvar/i })
       await user.click(saveButton)
 
       // Deve mostrar erro de paciente
@@ -178,7 +178,7 @@ describe('App - Integration Tests', () => {
       await user.click(bruceOption)
 
       // Tenta salvar sem telefone
-      const saveButton = screen.getByRole('button', { name: /salvar gas/i })
+      const saveButton = screen.getByRole('button', { name: /salvar/i })
       await user.click(saveButton)
 
       // Deve mostrar erro de telefone
@@ -204,7 +204,7 @@ describe('App - Integration Tests', () => {
       await user.type(phoneInput, '21971437438')
 
       // Tenta salvar sem preencher meta completa
-      const saveButton = screen.getByRole('button', { name: /salvar gas/i })
+      const saveButton = screen.getByRole('button', { name: /salvar/i })
       await user.click(saveButton)
 
       // Deve mostrar erro de metas
@@ -248,7 +248,7 @@ describe('App - Integration Tests', () => {
       }
 
       // Salva
-      const saveButton = screen.getByRole('button', { name: /salvar gas/i })
+      const saveButton = screen.getByRole('button', { name: /salvar/i })
       await user.click(saveButton)
 
       // Deve mostrar modal de sucesso

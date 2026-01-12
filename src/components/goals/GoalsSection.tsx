@@ -3,18 +3,20 @@ import type { Goal, GoalLevelKey } from '../../types/goals'
 import { LEVEL_LABELS, LEVEL_BADGES } from '../../constants/goals'
 
 const LEVEL_PLACEHOLDERS: Record<GoalLevelKey, string> = {
-  '2': 'Ex: Paciente apresentou excepcional progresso...',
-  '1': 'Ex: Paciente superou a meta alcançando 10-12 vezes...',
-  '0': 'Ex: Paciente atingiu a meta de 8 vezes de comunicação...',
-  '-1': 'Ex: Paciente aumentou a frequência para 4-5 vezes...',
-  '-2': 'Ex: Paciente não conseguiu iniciar os exercícios...',
+  '2': 'Ex: Paciente apresentou excepcional progresso, comunicando-se verbalmente 15+ vezes por sessão',
+  '1': 'Ex: Paciente superou a meta alcançando 10-12 vezes de comunicação verbal por sessão',
+  '0': 'Ex: Paciente atingiu a meta de 8 vezes de comunicação verbal por sessão por 2 meses',
+  '-1': 'Ex: Paciente aumentou a frequência para 4-5 vezes de comunicação verbal por sessão',
+  '-2': 'Ex: Paciente não conseguiu iniciar os exercícios propostos. Frequência verbal permaneceu baixa',
 }
 
 type GoalsSectionProps = {
   goals: Goal[]
   isSuggestingId: string | null
   highlightGoalId: string | null
+  metaHighlight: boolean
   goalsError?: string
+  goalNameErrorId?: string | null
   onGoalChange: (goalId: string, data: Partial<Goal>) => void
   onLevelChange: (goalId: string, level: GoalLevelKey, value: string) => void
   onSuggestLevels: (goalId: string) => void
@@ -27,7 +29,9 @@ export function GoalsSection({
   goals,
   isSuggestingId,
   highlightGoalId,
+  metaHighlight,
   goalsError,
+  goalNameErrorId,
   onGoalChange,
   onLevelChange,
   onSuggestLevels,
@@ -37,7 +41,7 @@ export function GoalsSection({
 }: GoalsSectionProps) {
   return (
     <div className="space-y-4 text-primary">
-      {goalsError && (
+      {goalsError && typeof goalsError === 'string' && goalNameErrorId === null && (
         <p className="text-xs font-semibold text-red-500">{goalsError}</p>
       )}
       {goals.map((goal, index) => (
@@ -48,6 +52,8 @@ export function GoalsSection({
           canDelete={index > 0}
           isSuggesting={isSuggestingId === goal.id}
           highlight={highlightGoalId === goal.id}
+          nameHighlight={metaHighlight && index === 0}
+          nameError={goalNameErrorId === goal.id ? 'Informe o nome da meta antes de sugerir níveis.' : undefined}
           onGoalChange={onGoalChange}
           onLevelChange={onLevelChange}
           onSuggestLevels={onSuggestLevels}
@@ -59,7 +65,7 @@ export function GoalsSection({
       <button
         type="button"
         onClick={onAdd}
-        className="flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-slate-300 bg-white py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-400 hover:bg-slate-50"
+        className="flex w-full items-center justify-center gap-2 rounded-xl border-[1.5px] border-dashed border-slate-300 bg-white py-3 text-sm font-bold text-[#71717A] transition hover:border-slate-400 hover:bg-slate-50"
       >
         + Nova meta
       </button>
@@ -73,6 +79,8 @@ type GoalCardProps = {
   canDelete: boolean
   isSuggesting: boolean
   highlight: boolean
+  nameHighlight?: boolean
+  nameError?: string
   onGoalChange: (goalId: string, data: Partial<Goal>) => void
   onLevelChange: (goalId: string, level: GoalLevelKey, value: string) => void
   onSuggestLevels: (goalId: string) => void
@@ -86,6 +94,8 @@ function GoalCard({
   canDelete,
   isSuggesting,
   highlight,
+  nameHighlight,
+  nameError,
   onGoalChange,
   onLevelChange,
   onSuggestLevels,
@@ -122,13 +132,31 @@ function GoalCard({
         </div>
         <div className="space-y-1">
           <label className="text-sm font-medium text-primary">Nome</label>
-          <input
-            id={`goal-${goal.id}-name`}
-            className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 shadow-sm outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
-            placeholder="Ex: Comunicação verbal na sala de aula"
-            value={goal.name}
-            onChange={(e) => onGoalChange(goal.id, { name: e.target.value })}
-          />
+          {nameHighlight ? (
+            <div className="relative rounded-xl bg-[linear-gradient(120deg,#7c7cff,#2dd4ff,#4ef0a3)] p-[2px] neon-border">
+              <input
+                id={`goal-${goal.id}-name`}
+                className="w-full rounded-lg border border-transparent bg-white px-3 py-2.5 text-sm text-slate-900 shadow-sm outline-none transition"
+                placeholder="Ex: Comunicação verbal na sala de aula"
+                value={goal.name}
+                onChange={(e) => onGoalChange(goal.id, { name: e.target.value })}
+              />
+              <span className="pointer-events-none absolute -top-2 right-2">
+                <WandIcon className="h-4 w-4 text-primary-purple" />
+              </span>
+            </div>
+          ) : (
+            <input
+              id={`goal-${goal.id}-name`}
+              className={`w-full rounded-lg border bg-white px-3 py-2.5 text-sm text-slate-900 shadow-sm outline-none transition focus:ring-2 focus:ring-indigo-100 ${
+                nameError ? 'border-red-400 focus:border-red-400' : 'border-slate-200 focus:border-indigo-400'
+              }`}
+              placeholder="Ex: Comunicação verbal na sala de aula"
+              value={goal.name}
+              onChange={(e) => onGoalChange(goal.id, { name: e.target.value })}
+            />
+          )}
+          {nameError && <p className="text-xs font-semibold text-red-500">{nameError}</p>}
         </div>
       </div>
 
@@ -185,7 +213,7 @@ function GoalCard({
         <div className="mt-3 pl-9">
           <button
             onClick={() => onSuggestLevels(goal.id)}
-            className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold text-white shadow-sm transition duration-500 bg-[linear-gradient(120deg,#2dd4ff,#5df2c9,#3bb8ff,#4ef0a3,#2dd4ff)] bg-[length:400%_400%] hover:shadow-md animate-aurora ${
+            className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold text-white shadow-sm transition duration-500 hover:shadow-md animate-aurora ${
               isSuggesting ? 'animate-pulse' : ''
             }`}
             disabled={isSuggesting}
@@ -196,7 +224,7 @@ function GoalCard({
           {isSuggesting && (
             <div className="mt-2 space-y-1">
               <p className="text-xs font-medium text-indigo-700">Pensando na tela...</p>
-              <div className="h-2 rounded-full bg-[linear-gradient(120deg,#2dd4ff,#5df2c9,#3bb8ff,#4ef0a3,#2dd4ff)] bg-[length:400%_400%] animate-aurora" />
+              <div className="h-2 rounded-full animate-aurora" />
             </div>
           )}
         </div>
@@ -230,19 +258,19 @@ function renderLevelGroup(
           <div key={level} className="flex flex-col gap-1">
             <p className="pl-12 text-sm font-semibold text-primary">{`Meta ${level}`}</p>
             <div className="flex items-center gap-3">
-              <span className="flex h-9 w-9 items-center justify-center rounded-md border-[0.5px] border-primary-border bg-slate-100 text-sm font-bold text-primary-light">
+              <span className="flex h-9 w-9 items-center justify-center rounded border-[0.5px] border-primary-border bg-slate-100 text-xs font-bold text-primary-light">
                 {LEVEL_BADGES[level]}
               </span>
               {highlight ? (
-                <div className="relative flex-1 rounded-xl bg-[linear-gradient(120deg,#7c7cff,#2dd4ff,#4ef0a3)] p-[2px]">
+                <div className="relative flex-1 rounded-xl bg-[linear-gradient(120deg,#7c7cff,#2dd4ff,#4ef0a3)] p-[2px] neon-border">
                   <input
                     id={`goal-${goal.id}-level-${level}`}
-                    className="w-full rounded-lg border border-transparent bg-white px-3 py-2.5 text-sm text-slate-900 shadow-sm outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
+                    className="w-full rounded-lg border border-transparent bg-white px-3 py-2.5 text-sm text-slate-900 shadow-sm outline-none transition"
                     placeholder={placeholderForLevel(level)}
                     value={goal.levels[level]}
                     onChange={(e) => onLevelChange(goal.id, level, e.target.value)}
                   />
-                  <span className="pointer-events-none absolute -top-4 -right-4">
+                  <span className="pointer-events-none absolute -top-2 right-2">
                     <WandIcon className="h-4 w-4 text-primary-purple" />
                   </span>
                 </div>

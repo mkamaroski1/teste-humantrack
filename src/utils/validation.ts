@@ -14,15 +14,24 @@ export function validateGasForm(form: GasForm, goals: Goal[]): ValidationResult 
   if (missingName) {
     errors.name = 'Informe o nome da GAS.'
     focusTarget = 'gas-name'
-  } else if (missingPatient) {
+  }
+  if (missingPatient) {
     errors.patient = 'Selecione o paciente.'
-    focusTarget = 'patient-select'
-  } else if (missingPhone) {
+    if (!focusTarget) {
+      focusTarget = 'patient-select'
+    }
+  }
+  if (missingPhone) {
     errors.phone = 'Informe o telefone.'
-    focusTarget = 'patient-phone'
-  } else if (goalsInvalid) {
+    if (!focusTarget) {
+      focusTarget = 'patient-phone'
+    }
+  }
+  if (goalsInvalid) {
     errors.goals = 'Preencha todos os campos da meta (nome e níveis).'
-    focusTarget = findFirstInvalidGoalFocusTarget(goals)
+    if (!focusTarget) {
+      focusTarget = findFirstInvalidGoalFocusTarget(goals)
+    }
   }
 
   return { errors, focusTarget }
